@@ -16,7 +16,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-App::import('Core', 'Validation');
+App::uses('Validation', 'Utility');
 
 /**
  * Media Validation Class

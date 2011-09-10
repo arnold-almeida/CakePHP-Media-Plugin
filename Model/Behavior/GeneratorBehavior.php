@@ -75,7 +75,7 @@ class GeneratorBehavior extends ModelBehavior {
  *
  * @var array
  */
-	var $_defaultSettings = array(
+	protected $_defaultSettings = array(
 		'baseDirectory'       => MEDIA_TRANSFER,
 		'filterDirectory'     => MEDIA_FILTER,
 		'createDirectory'     => true,
@@ -92,7 +92,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param array $settings See defaultSettings for configuration options
  * @return void
  */
-	function setup(&$Model, $settings = array()) {
+	function setup($Model, $settings = array()) {
 		$settings = (array)$settings;
 		$this->settings[$Model->alias] = array_merge($this->_defaultSettings, $settings);
 	}
@@ -107,7 +107,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param boolean $created
  * @return boolean
  */
-	function afterSave(&$Model, $created) {
+	function afterSave($Model, $created) {
 		$item = $Model->data[$Model->alias];
 
 		if (isset($item['dirname'], $item['basename'])) {
@@ -143,7 +143,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param string $file Path to a file relative to `baseDirectory`  or an absolute path to a file
  * @return boolean
  */
-	function make(&$Model, $file) {
+	function make($Model, $file) {
 		extract($this->settings[$Model->alias]);
 
 		list($file, $relativeFile) = $this->_file($Model, $file);
@@ -233,7 +233,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param array $process directory, version, instructions
  * @return boolean `true` if version for the file was successfully stored
  */
-	function makeVersion(&$Model, $file, $process) {
+	function makeVersion($Model, $file, $process) {
 		extract($this->settings[$Model->alias]);
 
 		/* Process builtin instructions */
@@ -326,7 +326,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param string $file
  * @return array
  */
-	function _file(&$Model, $file) {
+	function _file($Model, $file) {
 		extract($this->settings[$Model->alias]);
 		$file = str_replace(array('\\', '/'), DS, $file);
 
