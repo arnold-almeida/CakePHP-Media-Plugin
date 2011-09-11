@@ -88,7 +88,8 @@ class MediaHelper extends AppHelper {
  *                        trailing slash.
  * @return void
  */
-	function __construct($settings = array()) {
+	function __construct(View $View, $settings = array()) {
+		parent::__construct($View, $settings);
 		$this->_paths = array_merge($this->_paths, (array) $settings);
 	}
 
@@ -138,7 +139,7 @@ class MediaHelper extends AppHelper {
 		if (strpos($path, '://') !== false) {
 			return $path;
 		}
-		return $this->webroot . $path;
+		return $this->request->webroot . $path;
 	}
 
 /**

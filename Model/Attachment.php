@@ -26,23 +26,6 @@
  * @subpackage media.models
  */
 class Attachment extends MediaAppModel {
-
-/**
- * Name of model
- *
- * @var string
- * @access public
- */
-	var $name = 'Attachment';
-
-/**
- * Name of table to use
- *
- * @var mixed
- * @access public
- */
-	var $useTable = 'attachments';
-
 /**
  * actsAs property
  *

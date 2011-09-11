@@ -16,8 +16,9 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-App::import('Core', 'Inflector');
-App::import('Core', 'Cache');
+App::uses('Inflector', 'Utility');
+App::uses('Cache', 'Cache');
+
 require_once 'Mime/Type.php';
 require_once 'Media/Info.php';
 
@@ -76,7 +77,7 @@ class MetaBehavior extends ModelBehavior {
  * @param array $settings See defaultSettings for configuration options
  * @return void
  */
-	function setup(&$Model, $settings = array()) {
+	function setup($Model, $settings = array()) {
 		$this->settings[$Model->alias] = array_merge($this->_defaultSettings, (array)$settings);
 		$this->__cached[$Model->alias] = Cache::read('media_metadata_' . $Model->alias);
 	}
@@ -102,7 +103,7 @@ class MetaBehavior extends ModelBehavior {
  * @param Model $Model
  * @return boolean
  */
-	function beforeSave(&$Model) {
+	function beforeSave($Model) {
 		if ($Model->exists() || !isset($Model->data[$Model->alias]['file'])) {
 			return true;
 		}
@@ -124,7 +125,7 @@ class MetaBehavior extends ModelBehavior {
  * @param boolean $primary
  * @return array
  */
-	function afterFind(&$Model, $results, $primary = false) {
+	function afterFind($Model, $results, $primary = false) {
 		if (empty($results)) {
 			return $results;
 		}
@@ -151,7 +152,7 @@ class MetaBehavior extends ModelBehavior {
  * @param integer $level level of amount of info to add, `0` disable, `1` for basic, `2` for detailed info
  * @return mixed Array with results or false if file is not readable
  */
-	function metadata(&$Model, $file, $level = 1) {
+	function metadata($Model, $file, $level = 1) {
 		if ($level < 1) {
 			return array();
 		}

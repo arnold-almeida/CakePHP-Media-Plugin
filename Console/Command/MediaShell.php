@@ -16,8 +16,10 @@
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://github.com/davidpersson/media
  */
-App::import('Core', array('ConnectionManager', 'Folder'));
-require_once App::pluginPath('media') . 'config' . DS . 'core.php';
+App::uses('ConnectionManager', 'Model');
+require_once(App::path('Config', 'Media').'core.php');
+
+
 Configure::write('Cache.disable', true);
 
 /**
