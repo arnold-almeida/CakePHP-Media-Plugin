@@ -235,12 +235,12 @@ $s = array('convert' => 'image/png', 'zoomCrop' => array(100, 100));
 $m = array('convert' => 'image/png', 'fitCrop' => array(300, 300));
 $l = array('convert' => 'image/png', 'fit' => array(600, 440));
 
-Configure::write('Media.filter', array(
+Configure::write('Media.filter', array('default' => array(
 	'audio' => compact('s', 'm'),
 	'document' => compact('s', 'm'),
 	'generic' => array(),
 	'image' => compact('s', 'm', 'l'),
 	'video' => compact('s', 'm')
-));
+)));
 
 ?>

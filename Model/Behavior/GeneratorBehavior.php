@@ -157,7 +157,7 @@ class GeneratorBehavior extends ModelBehavior {
 
 		$filter = Configure::read('Media.filter.'.$this->settings['filter'].'.'.Mime_Type::guessName($file));
 		if (!is_array($filter)) {
-			$filter = Configure::read('Media.filter.' . Mime_Type::guessName($file));
+			$filter = Configure::read('Media.filter.default.' . Mime_Type::guessName($file));
 		}
 
 
