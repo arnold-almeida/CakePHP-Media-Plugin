@@ -40,7 +40,7 @@ class PolymorphicBehavior extends ModelBehavior {
  * @var array
  * @access protected
  */
-	var $_defaultSettings = array(
+	protected $_defaultSettings = array(
 		'modelField' => 'model',
 		'foreignKey' => 'foreign_key'
 	);
@@ -53,8 +53,12 @@ class PolymorphicBehavior extends ModelBehavior {
  * @return void
  * @access public
  */
-	function setup($Model, $config = array()) {
-		$this->settings[$Model->alias] = array_merge($this->_defaultSettings, $config);
+	public function setup($Model, $settings = array()) {
+		if (!isset($this->settings[$Model->alias])) {
+			$this->settings[$Model->alias] = $this->_defaultSettings;
+		}
+
+		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], (array) $settings);
 	}
 
 /**
@@ -66,7 +70,7 @@ class PolymorphicBehavior extends ModelBehavior {
  * @access public
  * @return void
  */
-	function afterFind($Model, $results, $primary = false) {
+	public function afterFind($Model, $results, $primary = false) {
 		extract($this->settings[$Model->alias]);
 		if (App::import('Vendor', 'MiCache')) {
 			$models = MiCache::mi('models');
@@ -130,7 +134,7 @@ class PolymorphicBehavior extends ModelBehavior {
  * @return string
  * @access public
  */
-	function display($Model, $id = null) {
+	public function display($Model, $id = null) {
 		if (!$id) {
 			if (!$Model->id) {
 				return false;

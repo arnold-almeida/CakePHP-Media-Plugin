@@ -92,9 +92,12 @@ class GeneratorBehavior extends ModelBehavior {
  * @param array $settings See defaultSettings for configuration options
  * @return void
  */
-	function setup($Model, $settings = array()) {
-		$settings = (array)$settings;
-		$this->settings[$Model->alias] = array_merge($this->_defaultSettings, $settings);
+	public function setup($Model, $settings = array()) {
+		if (!isset($this->settings[$Model->alias])) {
+			$this->settings[$Model->alias] = $this->_defaultSettings;
+		}
+
+		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], (array) $settings);
 	}
 
 /**
@@ -107,7 +110,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param boolean $created
  * @return boolean
  */
-	function afterSave($Model, $created) {
+	public function afterSave($Model, $created) {
 		$item = $Model->data[$Model->alias];
 
 		if (isset($item['dirname'], $item['basename'])) {
@@ -143,7 +146,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param string $file Path to a file relative to `baseDirectory`  or an absolute path to a file
  * @return boolean
  */
-	function make($Model, $file) {
+	public function make($Model, $file) {
 		extract($this->settings[$Model->alias]);
 
 		list($file, $relativeFile) = $this->_file($Model, $file);
@@ -233,7 +236,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param array $process directory, version, instructions
  * @return boolean `true` if version for the file was successfully stored
  */
-	function makeVersion($Model, $file, $process) {
+	public function makeVersion($Model, $file, $process) {
 		extract($this->settings[$Model->alias]);
 
 		/* Process builtin instructions */
@@ -302,7 +305,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param boolean $overwrite If true will unlink destination if it exists, defaults to false.
  * @return string Path to destination file.
  */
-	function _destinationFile($source, $directory, $extension = null, $overwrite = false) {
+	protected function _destinationFile($source, $directory, $extension = null, $overwrite = false) {
 		$destination = $directory;
 
 		if ($extension) {
@@ -326,7 +329,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param string $file
  * @return array
  */
-	function _file($Model, $file) {
+	protected function _file($Model, $file) {
 		extract($this->settings[$Model->alias]);
 		$file = str_replace(array('\\', '/'), DS, $file);
 

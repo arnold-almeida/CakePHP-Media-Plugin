@@ -38,7 +38,7 @@ class MediaValidation extends Validation {
  * 	false allows no MIME type
  * @return boolean
  */
-	function mimeType($check, $deny = false, $allow = true) {
+	public static function mimeType($check, $deny = false, $allow = true) {
 		if (!is_string($check) || !preg_match('/^[-\w.\+]+\/[-\w.\+]+$/', $check)) {
 			return false;
 		}
@@ -65,7 +65,7 @@ class MediaValidation extends Validation {
  * 	false allows no extension
  * @return boolean
  */
-	function extension($check, $deny = false, $allow = true) {
+	public static function extension($check, $deny = false, $allow = true) {
 		if (!is_string($check) || !preg_match('/^[\w0-9]+(\.[\w0-9]+)?$/', $check)) {
 			return false;
 		}
@@ -91,7 +91,7 @@ class MediaValidation extends Validation {
  * @param mixed $max String (e.g. 8M) containing maximum allowed size, false allows any size
  * @return boolean
  */
-	function size($check, $max = false) {
+	public static function size($check, $max = false) {
 		if (!$check = self::_toComputableSize($check)) {
 			return false;
 		}
@@ -125,7 +125,7 @@ class MediaValidation extends Validation {
  * @param mixed $max String (e.g. 40000 or 200x100) containing maximum allowed amount of pixels
  * @return boolean
  */
-	function pixels($check, $max = false) {
+	public static function pixels($check, $max = false) {
 		if (strpos($check, 'x') !== false) {
 			list($width, $height) = explode('x', $check);
 			$check = $width * $height;
@@ -145,7 +145,7 @@ class MediaValidation extends Validation {
  * 	an array containing absolute paths to locations
  * @return boolean
  */
-	function location($check, $allow = false) {
+	public static function location($check, $allow = false) {
 		$allow = self::_normalize($allow);
 
 		if ($allow === true) {
@@ -193,7 +193,7 @@ class MediaValidation extends Validation {
  * @param string $type Permission r, w or rw
  * @return boolean
  */
-	function access($check, $type = 'r') {
+	public static function access($check, $type = 'r') {
 		if (self::file($check, true) || self::folder($check, true)) {
 			if (strpos($type, 'r') !== false && !is_readable($check)) {
 				return false;
@@ -224,7 +224,7 @@ class MediaValidation extends Validation {
  * 	false to allow any permissions
  * @return boolean
  */
-	function permission($check, $match = true) {
+	public static function permission($check, $match = true) {
 		$match = self::_normalize($match);
 
 		if ($match === false) {
@@ -250,7 +250,7 @@ class MediaValidation extends Validation {
  * @param boolean $strict Enable checking for actual existence of file
  * @return boolean
  */
-	function file($check, $strict = true) {
+	public static function file($check, $strict = true) {
 		if (!is_string($check)) {
 			return false;
 		}
@@ -271,7 +271,7 @@ class MediaValidation extends Validation {
  * @param boolean $strict Enable checking for actual existence of directory
  * @return boolean
  */
-	function folder($check, $strict = true) {
+	public static function folder($check, $strict = true) {
 		if (!is_string($check)) {
 			return false;
 		}
@@ -287,7 +287,7 @@ class MediaValidation extends Validation {
  * @param mixed Array containing multiple strings, or a single string
  * @return mixed
  */
-	function _normalize() {
+	public static function _normalize() {
 		$args = func_get_args();
 
 		if (count($args) > 1) {
@@ -323,7 +323,7 @@ class MediaValidation extends Validation {
  * @param string $sizeString `php.ini` style size string e.g. `'16M'`
  * @return int Size in bytes
  */
-	function _toComputableSize($sizeString) {
+	protected static function _toComputableSize($sizeString) {
 		if (empty($sizeString)) {
 			return false;
 		}

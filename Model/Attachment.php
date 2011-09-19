@@ -95,14 +95,14 @@ class Attachment extends MediaAppModel {
 		));
 
 /**
- * Uncomment to get fancy path field.
+ * Supply a fancy Path field
  *
  * @var array
  * @access public
  */
-	// var $virtualFields = array(
-	//	'path' => "CONCAT_WS('/', dirname, basename)"
-	// );
+	var $virtualFields = array(
+		'path' => "CONCAT_WS('/', dirname, basename)"
+	);
 
 /**
  * Generate a version of a file

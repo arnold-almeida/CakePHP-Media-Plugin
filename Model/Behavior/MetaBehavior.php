@@ -42,13 +42,6 @@ require_once 'Media/Info.php';
 class MetaBehavior extends ModelBehavior {
 
 /**
- * Settings keyed by model alias
- *
- * @var array
- */
-	var $settings = array();
-
-/**
  * Default settings
  *
  * metadataLevel
@@ -58,7 +51,7 @@ class MetaBehavior extends ModelBehavior {
  *
  * @var array
  */
-	var $_defaultSettings = array(
+	protected $_defaultSettings = array(
 		'level' => 1
 	);
 
@@ -68,7 +61,7 @@ class MetaBehavior extends ModelBehavior {
  * @var array
  * @access private
  */
-	var $__cached = array();
+	protected $__cached = array();
 
 /**
  * Setup behavior settings and cached metadata for the current model
@@ -77,8 +70,13 @@ class MetaBehavior extends ModelBehavior {
  * @param array $settings See defaultSettings for configuration options
  * @return void
  */
-	function setup($Model, $settings = array()) {
-		$this->settings[$Model->alias] = array_merge($this->_defaultSettings, (array)$settings);
+	public function setup($Model, $settings = array()) {
+		if (!isset($this->settings[$Model->alias])) {
+			$this->settings[$Model->alias] = $this->_defaultSettings;
+		}
+
+		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], (array) $settings);
+
 		$this->__cached[$Model->alias] = Cache::read('media_metadata_' . $Model->alias);
 	}
 
@@ -87,7 +85,7 @@ class MetaBehavior extends ModelBehavior {
  *
  * @return void
  */
-	function __destruct() {
+	public function __destruct() {
 		foreach ($this->__cached as $alias => $data) {
 			if ($data) {
 				Cache::write('media_metadata_' . $alias, $data);
@@ -103,7 +101,7 @@ class MetaBehavior extends ModelBehavior {
  * @param Model $Model
  * @return boolean
  */
-	function beforeSave($Model) {
+	public function beforeSave($Model) {
 		if ($Model->exists() || !isset($Model->data[$Model->alias]['file'])) {
 			return true;
 		}
@@ -125,7 +123,7 @@ class MetaBehavior extends ModelBehavior {
  * @param boolean $primary
  * @return array
  */
-	function afterFind($Model, $results, $primary = false) {
+	public function afterFind($Model, $results, $primary = false) {
 		if (empty($results)) {
 			return $results;
 		}
@@ -152,7 +150,7 @@ class MetaBehavior extends ModelBehavior {
  * @param integer $level level of amount of info to add, `0` disable, `1` for basic, `2` for detailed info
  * @return mixed Array with results or false if file is not readable
  */
-	function metadata($Model, $file, $level = 1) {
+	public function metadata($Model, $file, $level = 1) {
 		if ($level < 1) {
 			return array();
 		}

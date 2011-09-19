@@ -138,10 +138,10 @@ $hasImagick = extension_loaded('imagick');
  * Bootstrap the `mm` library. We are putting the library into the include path which
  * is expected (by the library) in order to be able to load classes.
  */
-$mm = dirname(dirname(__FILE__)) . DS . 'libs' . DS . 'mm';
+$mm = dirname(dirname(__FILE__)) . DS . 'Lib' . DS . 'mm';
 
 if (strpos(ini_get('include_path'), $mm) === false) {
-	ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . $mm . DS . 'src');
+	ini_set('include_path', $mm.DS.'src'.PATH_SEPARATOR.ini_get('include_path'));
 }
 
 /**
@@ -212,10 +212,10 @@ Media_Process::config(array(
 require_once 'Media/Info.php';
 
 Media_Info::config(array(
-	// 'audio' => array('NewWave'),
-	// 'document' => array('Imagick'),
+	'audio' => array('NewWave'),
+	'document' => $hasImagick ? array('Imagick') : array(),
 	'image' => $hasImagick ? array('ImageBasic', 'Imagick') : array('ImageBasic'),
-	// 'video' => array()
+	//'video' => array()
 ));
 
 /**
