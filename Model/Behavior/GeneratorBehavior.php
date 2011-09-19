@@ -81,6 +81,7 @@ class GeneratorBehavior extends ModelBehavior {
 		'createDirectory'     => true,
 		'createDirectoryMode' => 0755,
 		'mode'                => 0644,
+		'filter'              => null,
 		'overwrite'           => false,
 		'guessExtension'      => true
 	);
@@ -93,6 +94,8 @@ class GeneratorBehavior extends ModelBehavior {
  * @return void
  */
 	public function setup($Model, $settings = array()) {
+		$this->_defaultSettings['filter'] = $Model->alias;
+
 		if (!isset($this->settings[$Model->alias])) {
 			$this->settings[$Model->alias] = $this->_defaultSettings;
 		}
@@ -152,7 +155,12 @@ class GeneratorBehavior extends ModelBehavior {
 		list($file, $relativeFile) = $this->_file($Model, $file);
 		$relativeDirectory = DS . rtrim(dirname($relativeFile), '.');
 
-		$filter = Configure::read('Media.filter.' . Mime_Type::guessName($file));
+		$filter = Configure::read('Media.filter.'.$this->settings['filter'].'.'.Mime_Type::guessName($file));
+		if (!is_array($filter)) {
+			$filter = Configure::read('Media.filter.' . Mime_Type::guessName($file));
+		}
+
+
 		$result = true;
 
 		foreach ($filter as $version => $instructions) {
