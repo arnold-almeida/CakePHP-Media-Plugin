@@ -82,6 +82,7 @@ class GeneratorBehavior extends ModelBehavior {
 		'createDirectoryMode' => 0755,
 		'mode'                => 0644,
 		'filter'              => null,
+		'mergeFilter'         => false,
 		'overwrite'           => false,
 		'guessExtension'      => true
 	);
@@ -155,12 +156,7 @@ class GeneratorBehavior extends ModelBehavior {
 		list($file, $relativeFile) = $this->_file($Model, $file);
 		$relativeDirectory = DS . rtrim(dirname($relativeFile), '.');
 
-		$filter = Configure::read('Media.filter.'.$this->settings['filter'].'.'.Mime_Type::guessName($file));
-		if (!is_array($filter)) {
-			$filter = Configure::read('Media.filter.default.' . Mime_Type::guessName($file));
-		}
-
-
+		$filter = $this->_filter($Model, $file);
 		$result = true;
 
 		foreach ($filter as $version => $instructions) {
@@ -350,6 +346,37 @@ class GeneratorBehavior extends ModelBehavior {
 		}
 		return array($file, $relativeFile);
 	}
+
+/**
+ * Returns the configured filter array
+ *
+ * @param Model $Model
+ * @param string $file
+ * @return array
+ */
+	protected function _filter($Model, $file) {
+		$name = Mime_Type::guessName($file);
+
+		$filter = $this->settings[$Model->alias]['filter'];
+
+		$default = false;
+		if (!is_array($filter)) {
+			$filters = Configure::read('Media.filter');
+
+			if (is_string($filter) && isset($filters[$filter])) {
+				$filter = $filters[$filter];
+			} else {
+				$filter = $filters['default'];
+				$default = true;
+			}
+		}
+
+		if (($default !== true) && ($this->settings[$Model->alias]['mergeFilter'] === true)) {
+			$filter = array_merge($filters['default'], (array)$filter);
+		}
+
+		return $filter[$name];
+    }
 }
 
 ?>
