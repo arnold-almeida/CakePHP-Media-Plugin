@@ -156,7 +156,7 @@ class GeneratorBehavior extends ModelBehavior {
 		list($file, $relativeFile) = $this->_file($Model, $file);
 		$relativeDirectory = DS . rtrim(dirname($relativeFile), '.');
 
-		$filter = $this->_filter($Model, $file);
+		$filter = $this->filter($Model, $file);
 		$result = true;
 
 		foreach ($filter as $version => $instructions) {
@@ -354,7 +354,7 @@ class GeneratorBehavior extends ModelBehavior {
  * @param string $file
  * @return array
  */
-	protected function _filter($Model, $file) {
+	public function filter($Model, $file) {
 		$name = Mime_Type::guessName($file);
 
 		$filter = $this->settings[$Model->alias]['filter'];
