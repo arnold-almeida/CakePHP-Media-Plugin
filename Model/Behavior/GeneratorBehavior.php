@@ -347,6 +347,10 @@ class GeneratorBehavior extends ModelBehavior {
 		return array($file, $relativeFile);
 	}
 
+	public function setFilter($Model, $filter = null) {
+		$this->settings[$Model->alias]['filter'] = $filter;
+	}
+
 /**
  * Returns the configured filter array
  *
