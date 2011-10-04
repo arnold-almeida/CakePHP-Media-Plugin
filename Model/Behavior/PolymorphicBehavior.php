@@ -75,7 +75,7 @@ class PolymorphicBehavior extends ModelBehavior {
 		if (App::import('Vendor', 'MiCache')) {
 			$models = MiCache::mi('models');
 		} else {
-			$models = Aoo::objects('Model');
+			$models = App::objects('Model');
 		}
 		if ($primary && isset($results[0][$Model->alias][$modelField]) && isset($results[0][$Model->alias][$foreignKey]) && $Model->recursive > 0) {
 			foreach ($results as $key => $result) {
