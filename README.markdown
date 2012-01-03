@@ -1,5 +1,4 @@
 ##Database Fields
-1.
 <pre>
     ``create table users (``
     ``id char(36) not null,``
