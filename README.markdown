@@ -22,6 +22,7 @@
 <pre>
     ``//Within you bootstrap.php``
     ``CakePlugin::load('Media');``
+    ``require_once APP . 'Plugin/Media/config/core.php';``
 </pre>
 4. Initialize Media files.
 ``cake Media.Media init``
@@ -50,7 +51,9 @@
 ``Do you want to create it now?  ``
 ``[n] > n``
 </pre>
-5. Set the model as media transfer user
+
+##Upload and View Image
+1. Set the model as media transfer user
 <pre>
 ``<?php``
 ``class User extends AppModel {``
@@ -58,8 +61,15 @@
 ``        var $actsAs = array('Media.Transfer', 'Media.Coupler', 'Media.Meta');``
 ``?>``
 </pre>
-6. Set the form:
+2. Set the form:
+<pre>
 ``echo $this->Form->input('file', array('type'=>'file'));``
 ``echo $this->Form->input('dirname', array('type'=>'hidden'));``
 ``echo $this->Form->input('basename', array('type'=>'hidden'));``
 ``echo $this->Form->input('checksum', array('type'=>'hidden'));``
+</pre>
+3. To view image:
+<pre>
+``<?php echo $this->Html->image( '../media/transfer/img/' . h($employee['User']['basename']), array('alt' => __('Profile Picture'), 'border' => '0')); ?>``
+</pre>
+4. ENJOY!
