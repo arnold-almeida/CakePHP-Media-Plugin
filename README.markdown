@@ -1,13 +1,28 @@
+##Database Fields
+1.
+<pre>
+    ``create table users (``
+    ``id char(36) not null,``
+    ``file varchar(255) default null,``
+    ``dirname varchar(255) default null,``
+    ``basename varchar(255) default null,``
+    ``checksum varchar(255) default null,``
+    ``created datetime default null,``
+    ``modified datetime default null,``
+    ``primary key(id)``
+    ``);``
+</pre>
+
 ##Installation
 1. Clone into /path/to/app/Plugin 
 ``git clone https://aeolu@github.com/aeolu/CakePHP-Media-Plugin.git Media``
 2. Add as a submodule
 ``git submodule add https://aeolu@github.com/aeolu/CakePHP-Media-Plugin.git Plugin/Media``
 3. Load the plugin.
-{{{
-    //Within you bootstrap.php
-    CakePlugin::load('Media');
-}}}
+<pre>
+    ``//Within you bootstrap.php``
+    ``CakePlugin::load('Media');``
+</pre>
 4. Initialize Media files.
 ``cake Media.Media init``
 <pre>
@@ -30,8 +45,21 @@
 ``/app/webroot/media/transfer/img                   [OK  ]``
 ``/app/webroot/media/transfer/vid                   [OK  ]``
 ``/app/webroot/media/filter/                        [OK  ]``
-````
+``
 ``Your transfer directory is missing a htaccess file to block requests.``
 ``Do you want to create it now?  ``
 ``[n] > n``
 </pre>
+5. Set the model as media transfer user
+<pre>
+``<?php``
+``class User extends AppModel {``
+``	var $name = 'User';``
+``        var $actsAs = array('Media.Transfer', 'Media.Coupler', 'Media.Meta');``
+``?>``
+</pre>
+6. Set the form:
+``echo $this->Form->input('file', array('type'=>'file'));``
+``echo $this->Form->input('dirname', array('type'=>'hidden'));``
+``echo $this->Form->input('basename', array('type'=>'hidden'));``
+``echo $this->Form->input('checksum', array('type'=>'hidden'));``
