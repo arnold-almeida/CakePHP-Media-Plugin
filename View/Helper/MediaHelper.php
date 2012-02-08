@@ -229,8 +229,7 @@ class MediaHelper extends AppHelper {
 			case 'image':
 				$attributes = $this->_addDimensions($sources[0]['file'], $attributes);
 
-				return sprintf(
-					$this->Html->tags['image'],
+				return $this->Html->useTag('image',
 					$sources[0]['url'],
 					$this->_parseAttributes($attributes)
 				);
