@@ -95,8 +95,13 @@ class PolymorphicBehavior extends ModelBehavior {
 					$conditions = array($model . '.' . $Model->$model->primaryKey => $result[$foreignKey]);
 					$recursive = -1;
 					$associated = $Model->$model->find('first', compact('conditions', 'recursive'));
-					$name = $Model->$model->display($result[$foreignKey]);
-					$associated[$model]['display_field'] = $name?$name:'*missing*';
+					
+					$name = null;
+					if(method_exists($Model->$model, 'display')) {
+						$name = $Model->$model->display($result[$foreignKey]);
+					}
+					
+					$associated[$model]['display_field'] = $name ? $name: "{$Model->$model->alias}->display()} is *missing*" ;
 					$results[$key][$model] = $associated[$model];
 				}
 			}
