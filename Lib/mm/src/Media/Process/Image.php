@@ -143,11 +143,13 @@ class Media_Process_Image extends Media_Process_Generic {
 	 *
 	 * @param integer $width
 	 * @param integer $height
-	 * @param string $gravity Currently supported values are "center", "topleft",
+	 * @param array   $cropFrom manually define the crop area start point. Format: array(left,top). 
+	 * 						e.g. array(10,20) => crop at [left:10, top:20]
+	 * @param string  $gravity Currently supported values are "center", "topleft",
 	 *                      "topright", "bottomleft", "bottomright", defaults to "center"
 	 * @return boolean
 	 */
-	public function fitCrop($width, $height, $gravity = 'center') {
+	public function fitCrop($width, $height, $gravity = 'center', $cropFrom = null) {
 		$rx = $this->_adapter->width() / $width;
 		$ry = $this->_adapter->height() / $height;
 
@@ -157,7 +159,7 @@ class Media_Process_Image extends Media_Process_Generic {
 		$resizeHeight = $this->_adapter->height() / $r;
 
 		$this->_adapter->resize($resizeWidth, $resizeHeight);
-		list($left, $top) = $this->_boxify($width, $height, $gravity);
+		list($left, $top) = (is_array($cropFrom) && count($cropFrom) == 2) ? $cropFrom : $this->_boxify($width, $height, $gravity);
 
 		return $this->_adapter->crop($left, $top, $width, $height);
 	}
