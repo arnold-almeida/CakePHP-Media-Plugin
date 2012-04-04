@@ -149,7 +149,7 @@ class Media_Process_Image extends Media_Process_Generic {
 	 *                      "topright", "bottomleft", "bottomright", defaults to "center"
 	 * @return boolean
 	 */
-	public function fitCrop($width, $height, $cropFrom = null, $gravity = 'center') {
+	public function fitCrop($width, $height, $gravity = 'center', $cropFrom = null) {
 		$rx = $this->_adapter->width() / $width;
 		$ry = $this->_adapter->height() / $height;
 
